@@ -1,0 +1,18 @@
+# Firewall rules for Pods. Once a Pod is selected by a policy, only allowed traffic gets in.
+# Here: only Pods labelled "access: allowed" may talk to the whoami Pods.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: whoami-allow-friends
+spec:
+  podSelector:
+    matchLabels:
+      app: whoami
+  policyTypes: ["Ingress"]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              access: allowed
+      ports:
+        - port: 80

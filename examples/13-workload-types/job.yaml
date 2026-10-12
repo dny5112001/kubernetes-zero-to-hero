@@ -1,0 +1,15 @@
+# A Job runs a task until it finishes successfully, then stops (no restarts forever).
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: count-to-five
+spec:
+  backoffLimit: 2 # retry at most twice if it fails
+  ttlSecondsAfterFinished: 600 # clean up 10 minutes after finishing
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: counter
+          image: busybox:1.37
+          command: ["sh", "-c", "for i in 1 2 3 4 5; do echo $i; sleep 1; done; echo done"]

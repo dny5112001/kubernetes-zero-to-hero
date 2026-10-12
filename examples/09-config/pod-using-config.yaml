@@ -1,0 +1,33 @@
+# Uses the ConfigMap and Secret in two ways: as environment variables, and as files.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-demo
+spec:
+  restartPolicy: Never
+  containers:
+    - name: demo
+      image: busybox:1.37
+      command:
+        - sh
+        - -c
+        - |
+          echo "colour=$APP_COLOUR mode=$APP_MODE password=$DB_PASSWORD"
+          cat /config/welcome.txt
+          sleep 3600
+      envFrom:
+        - configMapRef:
+            name: app-settings # every key becomes an env var
+      env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: DB_PASSWORD # pick one key
+      volumeMounts:
+        - name: config-files
+          mountPath: /config # every key becomes a file here
+  volumes:
+    - name: config-files
+      configMap:
+        name: app-settings

@@ -1,0 +1,17 @@
+# A small local Kubernetes cluster for these notes.
+#   kind create cluster --config examples/kind-cluster.yaml
+#
+# "extraPortMappings" connect a port on your laptop to a port inside the cluster
+# (kind's "nodes" are Docker containers, so this is how traffic gets in).
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: learn
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30080 # ingress controller (chapter 08)  -> http://localhost:8090
+        hostPort: 8090
+      - containerPort: 30007 # NodePort service (chapter 07)     -> http://localhost:8091
+        hostPort: 8091
+  - role: worker
+  - role: worker

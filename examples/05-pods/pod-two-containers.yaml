@@ -1,0 +1,22 @@
+# Two containers in one Pod share the same network (localhost) and can share folders.
+# The "writer" adds a line to a shared file every 5 seconds; nginx serves that file.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: two-containers
+spec:
+  volumes:
+    - name: shared
+      emptyDir: {} # a temporary folder that lives as long as the Pod
+  containers:
+    - name: web
+      image: nginx:1.29-alpine
+      volumeMounts:
+        - name: shared
+          mountPath: /usr/share/nginx/html
+    - name: writer
+      image: busybox:1.37
+      command: ["sh", "-c", "while true; do date >> /data/index.html; sleep 5; done"]
+      volumeMounts:
+        - name: shared
+          mountPath: /data

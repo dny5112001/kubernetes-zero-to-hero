@@ -1,0 +1,14 @@
+# NodePort = open a port on every node. With this lab's kind config, node port 30007
+# is mapped to http://localhost:8091 on your laptop.
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: whoami
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30007

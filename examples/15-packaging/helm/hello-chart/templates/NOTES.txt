@@ -1,0 +1,2 @@
+Installed {{ .Release.Name }} with {{ .Values.replicas }} replica(s).
+Try:  kubectl port-forward svc/{{ .Release.Name }} 8080:{{ .Values.service.port }}

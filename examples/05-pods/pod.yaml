@@ -1,0 +1,13 @@
+# The smallest thing Kubernetes runs: a Pod with one container.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello
+  labels:
+    app: hello
+spec:
+  containers:
+    - name: web
+      image: nginx:1.29-alpine
+      ports:
+        - containerPort: 80

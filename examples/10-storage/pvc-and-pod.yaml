@@ -1,0 +1,28 @@
+# Ask for 100Mi of disk (a PersistentVolumeClaim), then use it in a Pod.
+# kind's built-in "standard" StorageClass creates the actual volume automatically.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: notes-disk
+spec:
+  accessModes: ["ReadWriteOnce"] # one node can mount it read-write
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: disk-writer
+spec:
+  containers:
+    - name: writer
+      image: busybox:1.37
+      command: ["sh", "-c", "date >> /data/log.txt; cat /data/log.txt; sleep 3600"]
+      volumeMounts:
+        - name: disk
+          mountPath: /data
+  volumes:
+    - name: disk
+      persistentVolumeClaim:
+        claimName: notes-disk

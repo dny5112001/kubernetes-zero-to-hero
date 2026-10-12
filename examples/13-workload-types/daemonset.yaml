@@ -1,0 +1,23 @@
+# A DaemonSet runs exactly one Pod on every node — used for log collectors, monitoring agents.
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-reporter
+spec:
+  selector:
+    matchLabels:
+      app: node-reporter
+  template:
+    metadata:
+      labels:
+        app: node-reporter
+    spec:
+      containers:
+        - name: reporter
+          image: busybox:1.37
+          command: ["sh", "-c", "while true; do echo I am running on $NODE_NAME; sleep 30; done"]
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName # the Pod learns which node it's on

@@ -1,0 +1,13 @@
+# A Service gives a group of Pods one stable name and address, and spreads traffic across them.
+# ClusterIP = reachable only from inside the cluster, at http://whoami (same namespace).
+apiVersion: v1
+kind: Service
+metadata:
+  name: whoami
+spec:
+  type: ClusterIP
+  selector:
+    app: whoami # send traffic to Pods with this label
+  ports:
+    - port: 80 # the Service's port
+      targetPort: 80 # the container's port

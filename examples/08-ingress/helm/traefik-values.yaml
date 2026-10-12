@@ -1,0 +1,15 @@
+# Settings for installing the Traefik ingress controller with Helm on kind:
+#   helm repo add traefik https://traefik.github.io/charts
+#   helm install traefik traefik/traefik -n traefik --create-namespace -f examples/08-ingress/helm/traefik-values.yaml
+service:
+  spec:
+    type: NodePort # kind has no cloud load balancer
+ports:
+  web:
+    nodePort: 30080 # mapped to http://localhost:8090 by kind-cluster.yaml
+  websecure:
+    expose:
+      default: false
+ingressClass:
+  enabled: true
+  isDefaultClass: true

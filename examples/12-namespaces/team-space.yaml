@@ -1,0 +1,33 @@
+# A namespace for one team, with limits so they can't use the whole cluster.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: team-a
+  labels:
+    team: a
+---
+apiVersion: v1
+kind: ResourceQuota # a budget for the whole namespace
+metadata:
+  name: budget
+  namespace: team-a
+spec:
+  hard:
+    pods: "5"
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.memory: 2Gi
+---
+apiVersion: v1
+kind: LimitRange # defaults for containers that don't say what they need
+metadata:
+  name: defaults
+  namespace: team-a
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        cpu: 50m
+        memory: 64Mi
+      default:
+        memory: 128Mi

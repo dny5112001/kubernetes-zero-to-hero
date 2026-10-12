@@ -1,0 +1,17 @@
+# A CronJob creates a Job on a schedule. "*/1 * * * *" = every minute.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: every-minute
+spec:
+  schedule: "*/1 * * * *"
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: hello
+              image: busybox:1.37
+              command: ["sh", "-c", "echo Hello at $(date)"]

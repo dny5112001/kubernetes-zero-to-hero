@@ -1,0 +1,33 @@
+# Three broken Pods to practise on. Apply, then work out what's wrong with each
+# using the steps in chapter 16. Answers are at the bottom of the chapter.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: broken-one
+spec:
+  containers:
+    - name: web
+      image: nginx:1.29-alpne
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: broken-two
+spec:
+  containers:
+    - name: app
+      image: busybox:1.37
+      command: ["sh", "-c", "echo starting; cat /config/settings.txt; exit 1"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: broken-three
+spec:
+  containers:
+    - name: app
+      image: busybox:1.37
+      command: ["sleep", "3600"]
+      resources:
+        requests:
+          memory: 500Gi

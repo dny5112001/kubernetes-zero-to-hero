@@ -1,0 +1,10 @@
+# Normal (non-secret) settings.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-settings
+data:
+  APP_COLOUR: "purple"
+  APP_MODE: "learning"
+  welcome.txt: |
+    Hello! This whole file came from a ConfigMap.

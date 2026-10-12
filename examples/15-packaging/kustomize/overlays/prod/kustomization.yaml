@@ -1,0 +1,20 @@
+# prod = the base, with 3 replicas and a different name setting.
+namespace: prod
+namePrefix: prod-
+resources:
+  - ../../base
+  - namespace.yaml
+labels:
+  - pairs:
+      env: prod
+replicas:
+  - name: web
+    count: 3
+patches:
+  - target:
+      kind: Deployment
+      name: web
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env/0/value
+        value: production

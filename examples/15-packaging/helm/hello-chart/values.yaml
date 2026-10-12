@@ -1,0 +1,8 @@
+# Default settings. Override with --set replicas=3 or -f my-values.yaml
+replicas: 1
+image:
+  repository: traefik/whoami
+  tag: v1.11
+greeting: hello-from-helm
+service:
+  port: 80

@@ -1,0 +1,9 @@
+# dev = the base, in its own namespace, with a "dev-" prefix.
+namespace: dev
+namePrefix: dev-
+resources:
+  - ../../base
+  - namespace.yaml
+labels:
+  - pairs:
+      env: dev

@@ -1,0 +1,20 @@
+# Automatically scale "healthy" between 2 and 6 Pods, aiming for 50% CPU use.
+# Needs metrics-server (see chapter 11 for the install command on kind).
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: healthy
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: healthy
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
